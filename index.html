@@ -1,0 +1,82 @@
+<html>
+<body>
+
+    <div id="result"></div>
+
+    <script>
+        var input = ["{[()]}",
+            "{[(])})",
+            "{{[[(())]]}}"];
+
+        var tokens = [ ['{','}'] , ['[',']'] , ['(',')'] ];
+
+        var lineCount = 0;
+
+            while (lineCount < input.length) {
+                let result = isBalanced(input[lineCount]);
+                document.getElementById("result").innerHTML += (result + "\n");
+
+                lineCount++;
+            }
+       
+
+        function isBalanced(str) {
+            if (str === null) { return "YES"; }
+
+            var expression = str.split('');
+            var stack = [];
+            
+            for (var i = 0; i < expression.length; i++) {
+                if (isParanthesis(expression[i])) {
+                    if (isOpenParenthesis(expression[i])) {
+                        stack.push(expression[i]);
+                    } else {
+                        if (stack.length === 0) {
+                         return "NO";
+                        }
+                        var top = stack.pop(); 
+                        if (!matches(top, expression[i])) {
+                         return "NO";
+                        }
+                    }
+                }
+            }
+
+            var returnValue = stack.length === 0 ? true : false;    
+                if(returnValue){ 
+                    return "YES";
+                } else {
+                    return "NO";
+                }
+        }
+
+        function isParanthesis(char) {
+            var str = '{}[]()';
+            if (str.indexOf(char) > -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function isOpenParenthesis(parenthesisChar) {
+            for (var j = 0; j < tokens.length; j++) {
+                if (tokens[j][0] === parenthesisChar) {
+                return true;
+                }
+            }
+            return false;
+        }
+
+        function matches(topOfStack, closedParenthesis) {
+            for (var k = 0; k < tokens.length; k++) {
+                if (tokens[k][0] === topOfStack && tokens[k][1] === closedParenthesis) {
+                return true;
+                }
+            }
+            return false;
+        }  
+
+    </script>
+</body>
+</html>
